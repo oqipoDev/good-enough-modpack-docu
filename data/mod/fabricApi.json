@@ -1,0 +1,37 @@
+{
+	"id":"fabricApi",
+	"name":"Fabric API",
+	"authors":
+	[
+		{
+			"name":"modmuss50",
+			"role":"owner"
+		},
+		{
+			"name":"sfPlayer1",
+			"role":"owner"
+		}
+	],
+	"brief":"Common hook API for Fabric mods.",
+	"license":"Apache2",
+	"description":"Lightweight and modular API providing common hooks and intercompatibility measures utilized by mods using the Fabric toolchain.",
+	"loaders":
+	[
+		0
+	],
+	"type":"3",
+	"included":true,
+	"version":"0.76.0",
+	"linkIDs":
+	{
+		"cf":"fabric-api",
+		"mr":"fabric-api",
+		"gh":"FabricMC/fabric"
+	},
+	"image":"https://cdn.modrinth.com/data/P7dR8mSH/icon.png",
+	"website":"https://fabricmc.net/wiki/doku.php",
+	"categories":
+	[
+		"library"
+	]
+}

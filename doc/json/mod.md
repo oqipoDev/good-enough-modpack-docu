@@ -1,0 +1,23 @@
+# Data
+
+- `linkIDs`: Object, websites as _keys_ (_Modrinth_ as `mr`) and IDs as _values_
+- `included`: Boolean.
+- `modLoaders`: List of numbers.
+	- `0`: Fabric
+	- `1`: Quilt
+- `type`: Number.
+	- `0`: Client
+	- `1`: Server
+	- `2`: Both
+	- `3`: Either (has a "Client Mode")
+- `category`: List of strings.
+	- `Performance`: Enhances performance
+	- `Aesthetics`: Changes audio or video output
+	- `Rendering`: Changes to render pipeline
+	- `GameLogic`
+	- `Audio`: Changes to music and sounds
+	- `Gameplay`: Changes mechanics and dynamics 
+	- `Utility`: Changes functionality but no mechanics or dynamics
+	- `Features`: Adds new content or mechanics to the game
+	- `Testing`: Only use for testing, usually small replaceable mods
+- `depends`: List of strings. Name of dependencies
