@@ -33,10 +33,22 @@
 		}
 		function Initialise(){
 			RestoreTheme();
+			showMods();
+		}
+		function getMods(){
 			readFilesFrom("data/mods.json", "data/mod/", ".json", showMods);
 		}
-		function showMods(list){
-			console.log(list);
+		function showMods(data){
+			let options = document.getElementsByClassName("insertMods")[0];
+			options.innerHTML = "";
+			
+			fetch("data/mods.json")
+				.then((e) => e.json())
+				.then((e) => {
+					e.forEach(element => {
+						options.innerHTML += `<option value="${element}">${element}</option>`;
+					});
+				});
 		}
 	</script>
 </head>
@@ -63,7 +75,7 @@
 					<input type="text" name="name" id="name" oninput="modifyName()">
 				</div>
 				<div class="inputEntry align">
-					<label for="author">Authors</label>
+					<label>Authors</label>
 					<div id="authorList" class="inputList">
 						<div class="inputEntry template">
 							<div class="enum">1</div>
@@ -202,10 +214,20 @@
 					<label for="version">Version</label>
 					<input type="text" name="version" id="version">
 				</div>
-				<div class="inputEntry">
-					<div id="depDropdown" class="dropdown closed">
-						<button type="button" onclick="dropdown(depDropdown)">Dependencies</button>
-						<div class="dropdownContent insertMods"></div>
+				<div class="inputEntry align">
+					<label>Relations</label>
+					<div id="relationList" class="inputList">
+						<div class="inputEntry template">
+							<div class="enum">1</div>
+							<select name="relationType" id="relationType">
+								<option value="depends">Depends on</option>
+								<option value="benefits">Benefits from</option>
+							</select>
+							<select name="relationID" id="relationID" class="insertMods">
+							</select>
+							<button type="button" class="remove small">-</button>
+						</div>
+						<button type="button" class="add small" onclick="addInputListElement(relationList)">+</button>
 					</div>
 				</div>
 			</div>

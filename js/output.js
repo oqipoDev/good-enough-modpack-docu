@@ -14,6 +14,19 @@ function recordModData() {
 		mod.authors[i].role = authorroles[i];
 	}
 	
+	let modRelations = (getListData(document.getElementById("relationList"), "#relationType"));
+	let relatedMods = (getListData(document.getElementById("relationList"), "#relationID"));
+	
+	if (modRelations.length > 0)
+	{
+		mod.related = [];
+		for(let i = 0; i < authornames.length; i++){
+			mod.related[i] = {};
+			mod.related[i].type = modRelations[i];
+			mod.related[i].id = relatedMods[i];
+		}
+	}
+	
 	mod.brief = document.getElementById("brief").value;
 	mod.license = document.getElementById("license").value;
 	mod.description = document.getElementById("description").value;
@@ -48,5 +61,6 @@ function recordModData() {
 			mod.categories = mod.categories.concat(categs[i]);
 	}
 	
+	console.log(`File output:\n\n${prettifyJSON(JSON.stringify(mod))}`);
 	saveObjectAsJSON(mod, mod.id, null, true);
 }
