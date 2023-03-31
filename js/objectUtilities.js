@@ -52,7 +52,7 @@ function prettifyJSON(str){
 			result += str[i];
 		}
 		// Additional spacing
-		else if (str[i] == ',' ||
+		else if (str[i] == ',' && (str[i + 1] == '{' || str[i + 1] == '[' || str[i + 1] == '"')||
 		(str[i - 1] == '"' && str[i] == ':' && (str[i + 1] == '{' || str[i + 1] == '['))){
 			result += str[i];
 			newline();

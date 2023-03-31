@@ -174,7 +174,7 @@ function mimicTextInput(input, mimic, caseSwitch, spacing, removeSpecial)
 	}
 
 	if (removeSpecial) {
-		let specialChars = `\\/:*?<>|-@!#$%^&(){}[]'_=+`;
+		let specialChars = `\\.,/:*?<>|-@!#$%^&(){}[]'_=+`;
 		for (let i = 0; i < specialChars.length; i++) {
 			str = str.split(specialChars[i]).join("");
 		}

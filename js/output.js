@@ -48,7 +48,10 @@ function recordModData() {
 	mod.linkIDs.gh = document.getElementById("ghLink").value;
 	
 	mod.image = document.getElementById("imgLink").value;
-	mod.website = document.getElementById("webLink").value;
+	
+	if (document.getElementById("webLink").value != ""){
+		mod.website = document.getElementById("webLink").value;
+	}
 
 	mod.categories = [];
 	categs = ["performance","aesthetics",

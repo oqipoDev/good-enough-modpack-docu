@@ -55,7 +55,6 @@
 <body onload="Initialise()">
 	<div class="content">
 		<button onclick="SwitchTheme()">Switch Theme</button>
-		<button onclick="recordModData()">Done</button>
 	</div>
 	<form class="content">
 		<h1>Add Mod</h1>
@@ -80,8 +79,8 @@
 						<div class="inputEntry template">
 							<div class="enum">1</div>
 							<select name="authorRole" id="authorRole">
-								<option value="maintainer">Maintainer</option>
 								<option value="owner">Owner</option>
+								<option value="maintainer">Maintainer</option>
 							</select>
 							<input type="text" name="authorName" id="authorName">
 							<button type="button" class="remove small">-</button>
@@ -104,6 +103,7 @@
 						<option value="LGPL3">LGPL-3.0</option>
 						<option value="MIT">MIT</option>
 						<option value="Apache2">Apache 2.0</option>
+						<option value="CC01">CC0-1.0</option>
 					</select>
 				</div>
 			</div>
@@ -232,6 +232,8 @@
 				</div>
 			</div>
 		</div>
+		<button type="reset">Reset</button>
+		<button type="button" onclick="recordModData()">Done</button>
 	</form>
 </body>
 </html>
