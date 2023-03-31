@@ -1,0 +1,33 @@
+{
+	"id":"skipTransitions",
+	"name":"Skip Transitions",
+	"authors":
+	[
+		{
+			"name":"TrufflezMC",
+			"role":"owner"
+		}
+	],
+	"brief":"Removes intrusive or distracting transition effects.",
+	"license":"LGPL3",
+	"description":"Skips title screen animation, Mojang logo fade in/fade out and sliding notifications.",
+	"loaders":
+	[
+		0
+	],
+	"type":"0",
+	"included":true,
+	"version":"1.3.2",
+	"linkIDs":
+	{
+		"cf":"skip-transitions",
+		"mr":"skip-transitions",
+		"gh":"trufflezmc/skip-transitions"
+	},
+	"image":"https://cdn.modrinth.com/data/Zoz5HQjH/f069882153bbf91aa0532d3c7caec57f035b2522.png",
+	"categories":
+	[
+		"aesthetics",
+		"utility"
+	]
+}

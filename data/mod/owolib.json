@@ -1,0 +1,38 @@
+{
+	"id":"owolib",
+	"name":"owo-lib",
+	"authors":
+	[
+		{
+			"name":"glisco",
+			"role":"owner"
+		},
+		{
+			"name":"BasiqueEvangelist",
+			"role":"maintainer"
+		}
+	],
+	"brief":"General utility, GUI and config library",
+	"license":"MIT",
+	"description":"A general utility, GUI and config library for modding on Fabric and Quilt.",
+	"loaders":
+	[
+		0,
+		1
+	],
+	"type":"3",
+	"included":true,
+	"version":"0.9.3",
+	"linkIDs":
+	{
+		"cf":"owo-lib",
+		"mr":"owo-lib",
+		"gh":"wisp-forest/owo-lib"
+	},
+	"image":"https://cdn.modrinth.com/data/DIlqwRFH/icon.png",
+	"website":"https://docs.wispforest.io/owo/features/",
+	"categories":
+	[
+		"library"
+	]
+}

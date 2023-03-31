@@ -1,0 +1,37 @@
+{
+	"id":"fabricLanguageKotlin",
+	"name":"Fabric Language Kotlin",
+	"authors":
+	[
+		{
+			"name":"modmuss50",
+			"role":"owner"
+		},
+		{
+			"name":"sfPlayer1",
+			"role":"maintainer"
+		}
+	],
+	"brief":"Kotlin Language in Fabric.",
+	"license":"Apache2",
+	"description":"This is a mod that enables usage of the Kotlin programming language for Fabric mods.",
+	"loaders":
+	[
+		0
+	],
+	"type":"3",
+	"included":true,
+	"version":"1.9.2",
+	"linkIDs":
+	{
+		"cf":"fabric-language-kotlin",
+		"mr":"fabric-language-kotlin",
+		"gh":"FabricMC/fabric-language-kotlin"
+	},
+	"image":"https://cdn.modrinth.com/data/Ha28R6CL/icon.png",
+	"website":"https://fabricmc.net/wiki/",
+	"categories":
+	[
+		"library"
+	]
+}

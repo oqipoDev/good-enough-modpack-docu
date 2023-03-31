@@ -1,4 +1,10 @@
 [
+	"clothConfigApi",
+	"dynamicFps",
 	"fabricApi",
-	"clothConfigApi"
+	"fabricLanguageKotlin",
+	"fpsDisplay",
+	"modMenu",
+	"noTelemetry",
+	"owolib"
 ]

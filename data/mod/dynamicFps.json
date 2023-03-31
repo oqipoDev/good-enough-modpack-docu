@@ -1,0 +1,39 @@
+{
+	"id":"dynamicFps",
+	"name":"Dynamic FPS",
+	"authors":
+	[
+		{
+			"name":"juliand665",
+			"role":"owner"
+		}
+	],
+	"related":
+	[
+		{
+			"type":"depends",
+			"id":"clothConfigApi"
+		}
+	],
+	"brief":"Reduces performance when Minecraft is in the background.",
+	"license":"MIT",
+	"description":"Dynamic FPS automatically reduces the speed at which Minecraft renders when it's not focused (to 1 FPS) or hidden (no renders at all).",
+	"loaders":
+	[
+		0,1
+	],
+	"type":"0",
+	"included":true,
+	"version":"2.2.0",
+	"linkIDs":
+	{
+		"cf":"dynamic-fps",
+		"mr":"dynamic-fps",
+		"gh":"juliand665/Dynamic-FPS"
+	},
+	"image":"https://cdn.modrinth.com/data/LQ3K71Q1/icon.png",
+	"categories":
+	[
+		"performance"
+	]
+}
