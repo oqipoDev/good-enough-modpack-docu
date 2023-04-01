@@ -4,7 +4,12 @@
 	"fabricApi",
 	"fabricLanguageKotlin",
 	"fpsDisplay",
+	"lazydfu",
 	"modMenu",
 	"noTelemetry",
-	"owolib"
+	"owolib",
+	"phosphor",
+	"skipTransitions",
+	"smoothBoot",
+	"sodium"
 ]
