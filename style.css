@@ -134,11 +134,14 @@ a{
 	justify-content: space-between;
 }
 .enum {
+	display: flex;
+	flex-direction: column;
 	width: 2ch;
 	font-family: 'Consolas', Courier, monospace;
 	font-size: 0.8em;
 	color: var(--muted-color);
 	text-align: right;
+	justify-content: center;
 }
 .template {
 	display: none !important;

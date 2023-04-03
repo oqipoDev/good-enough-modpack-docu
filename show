@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Index - Terminally Online Mod</title>
+	<script src="js/theming.js"></script>
+	<script src="js/multipleReader.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		function Initialise(){
+			RestoreTheme();
+			testMR();
+		}
+		function testMR(){
+			fetch(`https://api.modrinth.com/v2/project/AANobbMI`)
+			.then((r) => r.json())
+			.then((r) => {showMod(r)});
+		}
+		function showMod(mod){
+			let content = document.querySelector("#modInfo");
+			content.innerHTML = `
+			<h2>${mod.title}</h2>`;
+
+			console.log(mod);
+		}
+	</script>
+</head>
+<body onload="Initialise()">
+	<div class="content">
+		<button onclick="SwitchTheme()">Switch Theme</button>
+		<a href="submit.html">Submit</a>
+	</div>
+	<div class="content" id="modInfo">
+
+	</div>
+</body>
+</html>

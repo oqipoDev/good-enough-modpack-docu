@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mods</title>
+	<script src="js/theming.js"></script>
+	<script src="js/multipleReader.js"></script>
+	<script src="js/objectUtilities.js"></script>
+	<script src="js/input.js"></script>
+	<script src="js/output.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		const MCver = "1.19.2";
+		let mods = [];
+
+		function Initialise(){
+			RestoreTheme();
+			testMR();
+		}
+		function testMR(){
+			readFilesFrom("data/modIDs.json", "https://api.modrinth.com/v2/project/", "", showMods);
+		}
+		function showMods(mods){
+			let list = document.querySelector("#modList");
+			list.innerHTML = "";
+
+			console.log(mods[0]);
+			list.innerHTML += `
+					<div class="template">
+						<div class="enum">#</div>
+						<input type="text" name="modrinthID" id="modrinthID">
+						<span id="modName">-</span>
+						<select id="modVersion" name="modVersion"></select>
+						<button type="button" class="remove small">-</button>
+					</div>`;
+
+			for (let i = 0; i < mods.length; i++) {
+				list.innerHTML += `
+					<div class="modListElement" id="modListElement${i}">
+						<div class="enum">${i}</div>
+						<input type="text" name="modrinthID" id="modrinthID" value="${mods[i].id}">
+						<span>${mods[i].title}</span>
+						<select id="modVersion" name="modVersion"></select>
+						<button type="button" class="remove small" onclick="removeInputListElement(modList, modListElement${i})">-</button>
+					</div>`;
+			}
+			list.innerHTML += `<button type="button" class="add small" onclick="addInputListElement(modList)">+</button>`;
+			list.parentElement.innerHTML += `<button id="reviewButton" type="button" onclick="reviewMods()">Review mods</button>
+				<button id="saveButton" type="button" onclick="saveChanges()">Done 👍</button>`;
+		}
+		function saveChanges(){
+			let listElem = document.getElementById("modList");
+			let modIDs = getListData(listElem, "#modrinthID");
+			let verIDs = getListData(listElem, "#modVersion");
+			let data = [];
+
+			for (let i = 0; i < modIDs.length; i++) {
+				data[i] = {};
+				data[i].mod = modIDs[i];
+				data[i].version = verIDs[i];
+			}
+			
+			saveObjectAsJSON(data, "modIDs", null, true);
+		}
+		function reviewMods(){
+			mods = [];
+			//Hide buttons
+			document.querySelector("#reviewButton").classList.add("template");
+			document.querySelector("#saveButton").classList.add("template");
+
+			let listElem = document.getElementById("modList");
+			let list = getListData(listElem, "#modrinthID");
+
+			fetch("https://api.modrinth.com/v2/projects?ids=" + JSON.stringify(list))
+				.then((e) => e.json())
+				.then((modsRes) => {
+					for (let i = 0; i < list.length; i++) {
+						for (let j = 0; j < modsRes.length; j++) {
+							if (list[i] == modsRes[j].id){
+								mods[i] = {};
+								mods[i].name = modsRes[j].title;
+								
+								modsRes.splice(j, 1);
+								break;
+							}
+						}
+					}
+				});
+			readFiles(list, "https://api.modrinth.com/v2/project/", `/version?game_versions=["${MCver}"]&loaders=["fabric"]`, recordModVersions);
+		}
+		function recordModVersions(result){
+			 for (let i = 0; i < result.length; i++) {
+				mods[i].versions = [];
+				for (let j = 0; j < result[i].length; j++) {
+					mods[i].versions[j] = {};
+					mods[i].versions[j].name = result[i][j].version_number;
+					mods[i].versions[j].id = result[i][j].id;
+				}
+			};
+			document.querySelector("#reviewButton").classList.remove("template");
+			document.querySelector("#saveButton").classList.remove("template")
+
+			for (let i = 0; i < mods.length; i++) {
+				selector = document.querySelector("#modListElement" + i).querySelector("#modVersion");
+				selector.innerHTML = "";
+				for (let j = 0; j < mods[i].versions.length; j++) {
+					selector.innerHTML += `
+					<option value="${mods[i].versions[j].id}">${mods[i].versions[j].name}</option>
+					`;	
+				}
+			}
+		}
+	</script>
+</head>
+<body onload="Initialise()">
+	<div class="content">
+		<button onclick="SwitchTheme()">Switch Theme</button>
+	</div>
+
+	<div class="content">
+		<div id="modList" class="inputList">
+			Loading...
+		</div>
+	</div>
+</body>
+</html>

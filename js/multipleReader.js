@@ -2,6 +2,7 @@ let fileListData = [];
 
 async function readFilesFrom(file, prefix, suffix, func){
 	let fileList = [];
+	fileListData = [];
 
 	fetch(file)
 		.then((e) => e.json())
@@ -17,12 +18,25 @@ async function readFilesFrom(file, prefix, suffix, func){
 		});
 }
 
+async function readFiles(list, prefix, suffix, func){
+	let urlList = [];
+	fileListData = [];
+
+	if (prefix == undefined) { prefix = ""};
+	if (suffix == undefined) { suffix = ""};
+	
+	for (let i = 0; i < list.length; i++) {
+		urlList[i] = prefix + list[i] + suffix;
+	}
+	sendTextReader(urlList, 0, func);
+}
+
 function sendTextReader(fileList, i, func){
 	if(i < fileList.length){
 		fetch(fileList[i])
 			.then((e) => e.json())
 			.then((e) => {
-				fileListData = fileListData.concat(e);
+				fileListData[fileListData.length] = e;
 				sendTextReader(fileList, i + 1, func);
 			});
 	}

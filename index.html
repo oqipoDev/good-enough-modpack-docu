@@ -4,15 +4,21 @@
 	<meta charset="UTF-8">
 	<title>Index - Terminally Online Mod</title>
 	<script src="js/theming.js"></script>
-	<script src="js/multipleReader.js"></script>
+	<script src="js/modrinthRequest.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<script>
 		function Initialise(){
 			RestoreTheme();
-			getMods();
-		}
-		function getMods(){
-			readFilesFrom("data/mods.json", "data/mod/", ".json", showMods);
+			fetch("data/modIDs.json")
+				.then((e) => e.json())
+				.then((e) => {
+					let ids = [];
+					e.forEach(elem => {
+						ids[ids.length] = elem.mod;
+					});
+
+					getMods(ids);
+			});
 		}
 		function showMods(data){
 			data.forEach(mod => {
@@ -20,7 +26,7 @@
 				`<div class="modCard">
 					<div class="modCardTitle">
 						<img src="${mod.image}" alt="${mod.name} icon">
-						<h2>${mod.name}</h2>
+						<h2><a href="https://modrinth.com/mod/${mod.linkIDs.mr}">${mod.name}</a></h2>
 					</div>
 					<div id="description">${mod.brief}</div>
 					<div class="modCardTitle">
@@ -34,7 +40,6 @@
 <body onload="Initialise()">
 	<div class="content">
 		<button onclick="SwitchTheme()">Switch Theme</button>
-		<a href="submit.html">Submit</a>
 	</div>
 	<h1>Mods</h1>
 	<div id="modGrid">
