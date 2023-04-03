@@ -18,7 +18,24 @@
 			testMR();
 		}
 		function testMR(){
-			readFilesFrom("data/modIDs.json", "https://api.modrinth.com/v2/project/", "", showMods);
+			fetch("data/modIDs.json")
+			.then((e) => e.json())
+			.then((mods) => {
+				let modList = [];
+				let versionList = [];
+				let enabledList = [];
+
+				for (let i = 0; i < mods.length; i++) {
+					modList[i] =  mods[i].mod;
+					versionList[i] =  mods[i].version;
+					enabledList[i] =  mods[i].enabled;
+				}
+
+				fetch("https://api.modrinth.com/v2/projects?ids=" + JSON.stringify(modList))
+				.then((e) => e.json()).then((e) => renderMods(e));
+				
+				readFiles(modList, "https://api.modrinth.com/v2/project/", `/version?game_versions=["${MCver}"]&loaders=["fabric"]`, renderVersions);
+			});
 		}
 		function showMods(mods){
 			let list = document.querySelector("#modList");
