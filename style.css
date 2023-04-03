@@ -143,7 +143,7 @@ a{
 	text-align: right;
 	justify-content: center;
 }
-.template {
+.template, .invisible{
 	display: none !important;
 }
 

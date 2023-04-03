@@ -111,6 +111,14 @@ function getListData(list, selector){
 	return data;
 }
 
+function clearList(list){
+	let elements = list.getElementsByClassName(list.id + "Element");
+
+	while (elements.length > 0) {
+		elements[0].remove();
+	};
+}
+
 /**
  * 
  * @param {Element} input Text input element

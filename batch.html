@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mods</title>
+	<script src="js/theming.js"></script>
+	<script src="js/multipleReader.js"></script>
+	<script src="js/objectUtilities.js"></script>
+	<script src="js/input.js"></script>
+	<script src="js/output.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		const MCver = "1.19.2";
+		let mods = [];
+
+		function Initialise(){
+			RestoreTheme();
+			restoreModData();
+		}
+		function restoreModData(){
+			hideButtons();
+
+			fetch("data/modIDs.json")
+			.then((e) => e.json())
+			.then((result) => {
+				let modList = [];
+				for (let i = 0; i < result.length; i++) {
+					modList[i] = result[i].mod;
+					mods[i] = {};
+					mods[i].id = result[i].mod;
+					mods[i].version =  result[i].version;
+				}
+
+				fetch("https://api.modrinth.com/v2/projects?ids=" + JSON.stringify(modList))
+				.then((e) => e.json()).then((e) => renderMods(e));
+				
+				readFiles(modList, "https://api.modrinth.com/v2/project/", `/version?game_versions=["${MCver}"]&loaders=["fabric"]`, renderVersions);
+			});
+		}
+		function rerenderMods(modList){
+			clearList(document.getElementById('modList'));
+			renderMods(modList);
+		}
+		function renderMods(modList){
+			let list = document.getElementById('modList');
+			let sortedMods = compareAndSort(modList, mods, 'id', 'id');
+
+			for (let i = 0; i < modList.length; i++) {
+				addInputListElement(list);
+				let elem = document.getElementById(`modListElement${i}`);
+				elem.querySelector('#modrinthID').setAttribute("value", sortedMods[i].id);
+				elem.querySelector('span').innerHTML = sortedMods[i].title;
+			}
+			list.innerHTML += ``;
+		}
+		function reviewMods(){
+			mods = [];
+			hideButtons();
+
+			let listElem = document.getElementById("modList");
+			let modInputList = getListData(listElem, "#modrinthID");
+			let verInputList = getListData(listElem, "#modVersion");
+
+			mods = [];
+			for (let i = 0; i < modInputList.length; i++) {
+				mods[i] = {};
+				mods[i].id =  modInputList[i];
+				mods[i].version =  verInputList[i];
+			}
+
+			fetch("https://api.modrinth.com/v2/projects?ids=" + JSON.stringify(modInputList))
+				.then((e) => e.json())
+				.then((modsRes) => rerenderMods(modsRes));
+			
+			readFiles(modInputList, "https://api.modrinth.com/v2/project/", `/version?game_versions=["${MCver}"]&loaders=["fabric"]`, renderVersions);
+		}
+		function compareAndSort(unsorted, sorted, uSelec, sSelec){
+			let dummyList = [...unsorted];
+			let newList = [];
+			for (let i = 0; i < sorted.length; i++) {
+				for (let j = 0; j < dummyList.length; j++) {
+					if (sorted[i][sSelec] == dummyList[j][uSelec]){
+						newList[i] = dummyList[j];
+
+						dummyList.splice(j, 1);
+						break;
+					}
+				}
+			}
+			return newList;
+		}
+		function renderVersions(result){
+			for (let mod = 0; mod < result.length; mod++) {
+				mods[mod].versions = [];
+				for (let ver = 0; ver < result[mod].length; ver++) {
+					mods[mod].versions[ver] = {};
+					mods[mod].versions[ver].name = result[mod][ver].version_number;
+					mods[mod].versions[ver].id = result[mod][ver].id;
+				}
+			};
+			
+			for (let i = 0; i < mods.length; i++) {
+				selector = document.querySelector("#modListElement" + i).querySelector("#modVersion");
+				selector.innerHTML = "";
+				for (let j = 0; j < mods[i].versions.length; j++) {
+					selector.innerHTML += `
+					<option value="${mods[i].versions[j].id}">${mods[i].versions[j].name}</option>
+					`;	
+				}
+				selector.value = mods[i].version;
+				restoreButtons();
+			}
+		}
+		function hideButtons(){
+			let buttons = document.getElementsByClassName("hideOnModLoading");
+			for (let i = 0; i < buttons.length; i++) {
+				buttons[i].classList.add("invisible");
+			}
+			document.getElementById('loadingMessage').classList.remove('invisible');
+		}
+		function restoreButtons(){
+			let buttons = document.getElementsByClassName("hideOnModLoading");
+			for (let i = 0; i < buttons.length; i++) {
+				buttons[i].classList.remove("invisible");
+			}
+			document.getElementById('loadingMessage').classList.add('invisible');
+		}
+		function saveChanges(){
+			let listElem = document.getElementById("modList");
+			let modIDs = getListData(listElem, "#modrinthID");
+			let verIDs = getListData(listElem, "#modVersion");
+			let data = [];
+
+			for (let i = 0; i < modIDs.length; i++) {
+				data[i] = {};
+				data[i].mod = modIDs[i];
+				data[i].version = verIDs[i];
+			}
+			
+			saveObjectAsJSON(data, "modIDs", null, true);
+		}
+	</script>
+</head>
+<body onload="Initialise()">
+	<div class="content">
+		<button onclick="SwitchTheme()">Switch Theme</button>
+	</div>
+
+	<div class="content">
+		<div id="modList" class="inputList">
+			<span id="loadingMessage">Loading...</span>
+			<div class="template inputEntry">
+				<div class="enum">#</div>
+				<input type="text" name="modrinthID" id="modrinthID">
+				<span id="modName">-</span>
+				<select id="modVersion" name="modVersion"></select>
+				<button type="button" class="remove small">-</button>
+			</div>
+			<button type="button" class="add small hideOnModLoading" onclick="addInputListElement(modList)">+</button>
+		</div>
+		<button class="hideOnModLoading" type="button" onclick="reviewMods()">Review mods</button>
+		<button class="hideOnModLoading" type="button" onclick="saveChanges()">Done 👍</button>
+	</div>
+</body>
+</html>
