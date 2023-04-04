@@ -9,6 +9,7 @@
 	<script src="js/input.js"></script>
 	<script src="js/output.js"></script>
 	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="css/input.css">
 	<script>
 		const MCver = "1.19.2";
 		let mods = [];
@@ -74,12 +75,12 @@
 			
 			readFiles(modInputList, "https://api.modrinth.com/v2/project/", `/version?game_versions=["${MCver}"]&loaders=["fabric"]`, renderVersions);
 		}
-		function compareAndSort(unsorted, sorted, uSelec, sSelec){
+		function compareAndSort(unsorted, sorted, uKey, sKey){
 			let dummyList = [...unsorted];
 			let newList = [];
 			for (let i = 0; i < sorted.length; i++) {
 				for (let j = 0; j < dummyList.length; j++) {
-					if (sorted[i][sSelec] == dummyList[j][uSelec]){
+					if (sorted[i][sKey] == dummyList[j][uKey]){
 						newList[i] = dummyList[j];
 
 						dummyList.splice(j, 1);
@@ -143,23 +144,26 @@
 </head>
 <body onload="Initialise()">
 	<div class="content">
-		<button onclick="SwitchTheme()">Switch Theme</button>
-	</div>
-
-	<div class="content">
-		<div id="modList" class="inputList">
-			<span id="loadingMessage">Loading...</span>
-			<div class="template inputEntry">
-				<div class="enum">#</div>
-				<input type="text" name="modrinthID" id="modrinthID">
-				<span id="modName">-</span>
-				<select id="modVersion" name="modVersion"></select>
-				<button type="button" class="remove small">-</button>
+		<div class="section" id="topBar">
+			<div>
+				<a href="index.html">← Back</a>
 			</div>
-			<button type="button" class="add small hideOnModLoading" onclick="addInputListElement(modList)">+</button>
 		</div>
-		<button class="hideOnModLoading" type="button" onclick="reviewMods()">Review mods</button>
-		<button class="hideOnModLoading" type="button" onclick="saveChanges()">Done 👍</button>
+		<div class="section">
+			<div id="modList" class="inputList">
+				<span id="loadingMessage">Loading...</span>
+				<div class="template inputEntry">
+					<div class="enum">#</div>
+					<input type="text" name="modrinthID" id="modrinthID">
+					<span id="modName">-</span>
+					<select id="modVersion" name="modVersion"></select>
+					<button type="button" class="remove small">-</button>
+				</div>
+				<button type="button" class="add small hideOnModLoading" onclick="addInputListElement(modList)">+</button>
+			</div>
+			<button class="hideOnModLoading" type="button" onclick="reviewMods()">Review mods</button>
+			<button class="hideOnModLoading" type="button" onclick="saveChanges()">Done 👍</button>
+		</div>
 	</div>
 </body>
 </html>
