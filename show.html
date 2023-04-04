@@ -3,35 +3,123 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Index - Terminally Online Mod</title>
-	<script src="js/theming.js"></script>
 	<script src="js/multipleReader.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<script>
+		
 		function Initialise(){
-			RestoreTheme();
-			testMR();
+			getMod();
 		}
-		function testMR(){
-			fetch(`https://api.modrinth.com/v2/project/AANobbMI`)
-			.then((r) => r.json())
-			.then((r) => {showMod(r)});
+		function getMod(){
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const mod = urlParams.get('q');
+
+			fetch(`https://api.modrinth.com/v2/project/${mod}`)
+				.then((r) => {
+					if (r.ok){
+						r.json().then((r) => showMod(r));
+					}
+					else {
+						window.location.replace("index.html");
+					}
+				});
+			fetch ('data/modIDs.json')
+				.then((r) => r.json())
+				.then((r) => getVer(r, mod));
+		}
+
+		function setContent(id, content){
+			document.getElementById(id).innerHTML = content;
+		}
+		function setMultipleContentIn(id, contentList, classes){
+			let elem = document.getElementById(id);
+
+			for (const i in contentList) {
+				elem.innerHTML += `
+					<div class="${classes}">
+						${contentList[i]}
+					</div>`;
+			}
+		}
+		function isIn(element, list){
+			for (let i = 0; i < list.length; i++){
+				if(list[i] == element){
+					return true;
+				}
+			}
+			return false;
 		}
 		function showMod(mod){
-			let content = document.querySelector("#modInfo");
-			content.innerHTML = `
-			<h2>${mod.title}</h2>`;
+			setContent('modTitle', mod.title);
+			setContent('modDescription', mod.description);
+			setContent('modLicense', mod.license.name);
+			setMultipleContentIn('modCategories', mod.categories, 'tag');
 
-			console.log(mod);
+			let icon = document.getElementById('modIcon');
+			icon.setAttribute('src', mod.icon_url);
+			icon.setAttribute('alt', mod.title + " icon");
+			//console.log(mod);
+		}
+		function getVer(mods, modID){
+			let found = false;
+			for (const i in mods) {
+				if (modID == mods[i].mod) {
+					fetch(`https://api.modrinth.com/v2/version/${mods[i].version}`)
+					.then((e) => {
+						if (e.ok){
+							e.json().then((e) => {
+								if (e.project_id == modID)
+									showVer(e);
+								else setContent('modVersion', "Incorrect version!");
+							});
+						}
+						else {
+							setContent('modVersion', "Version unknown");
+						};
+					});
+					found = true;
+					break;
+				}
+			}
+			if (found)
+				document.getElementById('inButtons').classList.remove('invisible');
+			else document.getElementById('outButtons').classList.remove('invisible');
+		}
+		function showVer(data){
+			setContent('modVersion', data.name);
+			console.log(data);
 		}
 	</script>
 </head>
 <body onload="Initialise()">
 	<div class="content">
-		<button onclick="SwitchTheme()">Switch Theme</button>
-		<a href="submit.html">Submit</a>
-	</div>
-	<div class="content" id="modInfo">
-
+		<div class="section" id="topBar">
+			<div>
+				<a href="index.html">← Back</a>
+			</div>
+		</div>
+		<div class="section gap" id="modInfo">
+			<div class="modHeader">
+				<img id="modIcon" src="" alt="" srcset="">
+				<div style="display: flex; align-items:baseline;">
+					<h1 id="modTitle">Mod Name</h1>
+					<div id="modVersion"></div>
+				</div>
+			</div>
+			<div id="modCategories" class="tags"></div>
+			<div id="modDescription"></div>
+			<div id="modLicense" class="tag"></div>
+			<div id="buttons">
+				<div id="inButtons" class="invisible">
+					<button disabled="disabled" type="button">Delete</button>
+					<button disabled="disabled" type="button">Change Version</button>
+				</div>
+				<div id="outButtons" class="invisible">
+					<button disabled="disabled" type="button">Add</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -3,12 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Index - Terminally Online Mod</title>
-	<script src="js/theming.js"></script>
 	<script src="js/modrinthRequest.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<script>
 		function Initialise(){
-			RestoreTheme();
 			fetch("data/modIDs.json")
 				.then((e) => e.json())
 				.then((e) => {
@@ -17,21 +15,18 @@
 						ids[ids.length] = elem.mod;
 					});
 
-					getMods(ids);
+					getMods(ids, showMods);
 			});
 		}
 		function showMods(data){
 			data.forEach(mod => {
 				document.getElementById("modGrid").innerHTML +=
-				`<div class="modCard">
-					<div class="modCardTitle">
-						<img src="${mod.image}" alt="${mod.name} icon">
-						<h2><a href="https://modrinth.com/mod/${mod.linkIDs.mr}">${mod.name}</a></h2>
+				`<div class="modCard" onclick="window.location.replace('show.html?q=${mod.id}')">
+					<div class="modCardHeader">
+						<img src="${mod.icon_url}" alt="${mod.title} icon">
+						<span class="modCardTitle">${mod.title}</span>
 					</div>
-					<div id="description">${mod.brief}</div>
-					<div class="modCardTitle">
-						Version ${mod.version}
-					</div>
+					<div class="modCardDescription">${mod.description}</div>
 				</div>`;
 			});
 		}
@@ -39,10 +34,11 @@
 </head>
 <body onload="Initialise()">
 	<div class="content">
-		<button onclick="SwitchTheme()">Switch Theme</button>
 	</div>
-	<h1>Mods</h1>
-	<div id="modGrid">
+	<div class="content">
+		<h1>Mods</h1>
+		<div id="modGrid">
+		</div>
 	</div>
 </body>
 </html>
