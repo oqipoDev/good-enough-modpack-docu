@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Index - Terminally Online Mod</title>
+	<script src="js/modrinthRequest.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<script>
+		async function Initialise(){
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const version = urlParams.get('ver');
+
+			//Check param validity
+			let r;
+			try {
+				r = await fetch(`data/mods/${version}.json`);
+			} catch (error) {
+				window.location.replace("index.html");
+				return;
+			}
+			
+			const data = await r.json();
+			// Arrange IDs for request
+			let ids = [];
+			data.forEach(elem => {
+				ids[ids.length] = elem.mod;
+			});
+			
+			document.getElementById("version").innerHTML = version;
+			getMods(ids, showMods);
+		}
+		function showMods(data){
+			data.forEach(mod => {
+				document.getElementById("modGrid").innerHTML +=
+				`<div class="modCard" onclick="window.location.replace('show.html?q=${mod.id}')">
+					<div class="modCardHeader">
+						<img src="${mod.icon_url}" alt="${mod.title} icon">
+						<span class="modCardTitle">${mod.title}</span>
+					</div>
+					<div class="modCardDescription">${mod.description}</div>
+				</div>`;
+			});
+		}
+	</script>
+</head>
+<body onload="Initialise()">
+	<div class="content">
+		<div class="section" id="topBar">
+			<a href="index.html">← Back</a>
+		</div>
+	</div>
+	<div class="content">
+		<h1>Mods in <span id="version"></span> version</h1>
+		<div id="modGrid">
+		</div>
+	</div>
+</body>
+</html>

@@ -3,41 +3,19 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Index - Terminally Online Mod</title>
-	<script src="js/modrinthRequest.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<script>
-		function Initialise(){
-			fetch("data/modIDs.json")
-				.then((e) => e.json())
-				.then((e) => {
-					let ids = [];
-					e.forEach(elem => {
-						ids[ids.length] = elem.mod;
-					});
-
-					getMods(ids, showMods);
-			});
-		}
-		function showMods(data){
-			data.forEach(mod => {
-				document.getElementById("modGrid").innerHTML +=
-				`<div class="modCard" onclick="window.location.replace('show.html?q=${mod.id}')">
-					<div class="modCardHeader">
-						<img src="${mod.icon_url}" alt="${mod.title} icon">
-						<span class="modCardTitle">${mod.title}</span>
-					</div>
-					<div class="modCardDescription">${mod.description}</div>
-				</div>`;
-			});
 		}
 	</script>
 </head>
-<body onload="Initialise()">
+<body">
 	<div class="content">
 	</div>
 	<div class="content">
-		<h1>Mods</h1>
-		<div id="modGrid">
+		<h1><i>Name Pending</i> Modpack</h1>
+		<div class="section">
+			<h2>Mods</h2>
+			<a href="mods.html?ver=latest">Latest</a>
 		</div>
 	</div>
 </body>
