@@ -21,7 +21,7 @@
 		function restoreModData(){
 			hideButtons();
 
-			fetch("data/modIDs.json")
+			fetch("data/mods/latest.json")
 			.then((e) => e.json())
 			.then((result) => {
 				let modList = [];
